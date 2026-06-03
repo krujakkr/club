@@ -4,9 +4,9 @@ session_start();
 
 // ข้อมูลการเชื่อมต่อฐานข้อมูล
 define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'knwacth_club');
-define('DB_PASSWORD', '2!06hhC2t');
-define('DB_NAME', 'knwacth_club');
+define('DB_USERNAME', 'database_user');
+define('DB_PASSWORD', 'database_password');
+define('DB_NAME', 'database_name');
 
 // เชื่อมต่อกับฐานข้อมูล MySQL
 $conn = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
