@@ -1,0 +1,50 @@
+<?php
+
+// ข้อความตรวจสอบข้อมูลเฉพาะกฎที่ระบบนี้ใช้ กฎอื่นจะใช้ข้อความภาษาอังกฤษของ Laravel
+return [
+    'required' => 'กรุณากรอก:attribute',
+    'required_with' => 'กรุณากรอก:attribute',
+    'string' => ':attributeต้องเป็นข้อความ',
+    'integer' => ':attributeต้องเป็นจำนวนเต็ม',
+    'date' => ':attributeไม่ใช่วันที่ที่ถูกต้อง',
+    'digits' => ':attributeต้องเป็นตัวเลข :digits หลัก',
+    'digits_between' => ':attributeต้องเป็นตัวเลข :min ถึง :max หลัก',
+    'in' => ':attributeที่เลือกไม่ถูกต้อง',
+    'exists' => ':attributeที่เลือกไม่มีในระบบ',
+    'unique' => ':attributeนี้มีในระบบแล้ว',
+    'regex' => 'รูปแบบของ:attributeไม่ถูกต้อง',
+    'confirmed' => 'ยืนยัน:attributeไม่ตรงกัน',
+    'prohibited' => 'ไม่อนุญาตให้แก้ไข:attribute',
+    'file' => ':attributeต้องเป็นไฟล์',
+    'mimes' => ':attributeต้องเป็นไฟล์ประเภท :values',
+    'after' => ':attributeต้องอยู่หลัง :date',
+    'array' => ':attributeต้องเป็นรายการ',
+    'min' => [
+        'numeric' => ':attributeต้องไม่น้อยกว่า :min',
+        'string' => ':attributeต้องยาวอย่างน้อย :min ตัวอักษร',
+        'array' => ':attributeต้องมีอย่างน้อย :min รายการ',
+    ],
+    'max' => [
+        'numeric' => ':attributeต้องไม่เกิน :max',
+        'string' => ':attributeต้องยาวไม่เกิน :max ตัวอักษร',
+        'file' => ':attributeต้องมีขนาดไม่เกิน :max KB',
+    ],
+
+    'attributes' => [
+        'student_id' => 'เลขประจำตัวนักเรียน',
+        'id_card' => 'เลขบัตรประชาชน',
+        'teacher_id' => 'รหัสครู',
+        'firstname' => 'ชื่อ',
+        'lastname' => 'นามสกุล',
+        'phone' => 'เบอร์โทรศัพท์',
+        'password' => 'รหัสผ่าน',
+        'current_password' => 'รหัสผ่านปัจจุบัน',
+        'club_name' => 'ชื่อชุมนุม',
+        'max_members' => 'จำนวนที่รับ',
+        'class_room' => 'ห้อง',
+        'class_number' => 'เลขที่',
+        'grade_level' => 'ระดับชั้น',
+        'start' => 'วันเริ่มต้น',
+        'end' => 'วันสิ้นสุด',
+    ],
+];

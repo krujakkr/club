@@ -1,0 +1,5 @@
+# ส่งทุกคำขอเข้าโฟลเดอร์ public ของ Laravel (กรณีชี้ DocumentRoot มาที่โฟลเดอร์โปรเจกต์)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

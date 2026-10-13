@@ -1,0 +1,80 @@
+@import 'tailwindcss';
+
+@source '../js';
+
+@theme {
+    /* หัวข้อใช้ Anuphan เนื้อหาใช้ Sarabun */
+    --font-sans: 'Sarabun', ui-sans-serif, system-ui, sans-serif;
+    --font-heading: 'Anuphan', 'Sarabun', ui-sans-serif, system-ui, sans-serif;
+
+    /* โทนวิชาการ: กรมท่าบนพื้นกระดาษ เส้นบาง ไม่ใช้เงาหนัก */
+    --color-ink: #1c2530;
+    --color-muted: #5d6875;
+    --color-paper: #f7f6f2;
+    --color-line: #dcd9d0;
+    --color-navy-50: #eef2f7;
+    --color-navy-100: #d9e2ee;
+    --color-navy-600: #26486f;
+    --color-navy-700: #1b3a5c;
+    --color-navy-800: #142c47;
+    --color-gold: #a9843a;
+    --color-ok: #2f6b4a;
+    --color-ok-soft: #e7f1ea;
+    --color-warn: #8a6410;
+    --color-warn-soft: #f8f0da;
+    --color-danger: #9b2c2c;
+    --color-danger-soft: #f8e7e5;
+}
+
+@layer base {
+    html {
+        font-size: 16px;
+    }
+
+    body {
+        @apply bg-paper font-sans text-ink antialiased;
+        line-height: 1.65;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    legend,
+    th {
+        font-family: var(--font-heading);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-navy-600);
+        outline-offset: 2px;
+    }
+}
+
+@layer components {
+    .table-plain {
+        @apply w-full border-collapse text-[0.95rem];
+    }
+
+    .table-plain th {
+        @apply border-b-2 border-ink/70 px-3 py-2 text-left text-sm font-semibold whitespace-nowrap;
+    }
+
+    .table-plain td {
+        @apply border-b border-line px-3 py-2 align-top;
+    }
+
+    .table-plain tbody tr:hover {
+        @apply bg-navy-50/50;
+    }
+}
+
+@media print {
+    body {
+        background: #fff;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
