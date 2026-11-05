@@ -78,6 +78,20 @@ return [
             'strict' => false,
         ],
 
+        // ฐานข้อมูลหลักของโรงเรียน ใช้ดึงรายชื่อครูในหน้า admin/teachers (อ่านอย่างเดียว)
+        'tel' => [
+            'driver' => 'mysql',
+            'host' => env('TEL_DB_HOST', '127.0.0.1'),
+            'port' => env('TEL_DB_PORT', '3306'),
+            'database' => env('TEL_DB_DATABASE', 'knwacth_tel'),
+            'username' => env('TEL_DB_USERNAME', 'root'),
+            'password' => env('TEL_DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+        ],
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
