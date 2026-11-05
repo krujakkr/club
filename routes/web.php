@@ -41,6 +41,7 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
 
     Route::get('/teachers', [Admin\TeacherController::class, 'index'])->name('teachers');
     Route::post('/teachers', [Admin\TeacherController::class, 'store']);
+    Route::post('/teachers/import', [Admin\TeacherController::class, 'import'])->name('teachers.import');
     Route::put('/teachers/{teacher}', [Admin\TeacherController::class, 'update']);
     Route::delete('/teachers/{teacher}', [Admin\TeacherController::class, 'destroy']);
 

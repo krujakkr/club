@@ -1,5 +1,5 @@
 import { router, useForm } from '@inertiajs/react';
-import { Download, Plus } from 'lucide-react';
+import { DatabaseZap, Download, Plus } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Badge, Button, Confirm, Field, Input, Modal, Select, Stat, formatDateTime } from '../../Components/ui';
 import SiteLayout, { PageTitle } from '../../Layouts/SiteLayout';
@@ -11,6 +11,7 @@ function TeacherModal({ teacher, departments, open, onClose }) {
         firstname: teacher?.firstname ?? '',
         lastname: teacher?.lastname ?? '',
         phone: teacher?.phone ?? '',
+        id_card_last6: teacher?.id_card_last6 ?? '',
         department: teacher?.department ?? '',
     });
     const { data, setData, errors } = form;
@@ -28,10 +29,18 @@ function TeacherModal({ teacher, departments, open, onClose }) {
                     <Field label="รหัสครู" error={errors.teacher_id} hint="ตัวเลข 3 หลัก ชุดเดียวกับ ปพ.5">
                         <Input inputMode="numeric" maxLength={10} value={data.teacher_id} onChange={(e) => setData('teacher_id', e.target.value)} required />
                     </Field>
-                    <Field label="เบอร์โทรศัพท์" error={errors.phone} hint="10 หลัก ใช้เป็นรหัสผ่านเข้าสู่ระบบของครู">
-                        <Input inputMode="numeric" maxLength={12} value={data.phone ?? ''} onChange={(e) => setData('phone', e.target.value)} />
+                    <Field label="เลขท้ายบัตรประชาชน" error={errors.id_card_last6} hint="6 หลัก ใช้เป็นรหัสผ่านเข้าสู่ระบบของครู">
+                        <Input
+                            inputMode="numeric"
+                            maxLength={6}
+                            value={data.id_card_last6 ?? ''}
+                            onChange={(e) => setData('id_card_last6', e.target.value)}
+                        />
                     </Field>
                 </div>
+                <Field label="เบอร์โทรศัพท์" error={errors.phone} hint="10 หลัก">
+                    <Input inputMode="numeric" maxLength={12} value={data.phone ?? ''} onChange={(e) => setData('phone', e.target.value)} />
+                </Field>
                 <div className="grid gap-4 sm:grid-cols-2">
                     <Field label="ชื่อ (รวมคำนำหน้า)" error={errors.firstname}>
                         <Input value={data.firstname} onChange={(e) => setData('firstname', e.target.value)} required />
@@ -66,6 +75,18 @@ export default function Teachers({ teachers, departments }) {
     const [department, setDepartment] = useState('');
     const [editing, setEditing] = useState(null); // ครูที่กำลังแก้ไข หรือ 'new'
     const [deleting, setDeleting] = useState(null);
+    const [importing, setImporting] = useState(false);
+    const [importBusy, setImportBusy] = useState(false);
+
+    const runImport = () =>
+        router.post('/admin/teachers/import', {}, {
+            preserveScroll: true,
+            onStart: () => setImportBusy(true),
+            onFinish: () => {
+                setImportBusy(false);
+                setImporting(false);
+            },
+        });
 
     const visible = useMemo(() => {
         const keyword = search.trim().toLowerCase();
@@ -88,6 +109,9 @@ export default function Teachers({ teachers, departments }) {
                     <>
                         <Button as="a" variant="outline" href="/admin/export/teachers">
                             <Download size={16} /> ส่งออก CSV
+                        </Button>
+                        <Button variant="outline" onClick={() => setImporting(true)}>
+                            <DatabaseZap size={16} /> นำเข้า
                         </Button>
                         <Button onClick={() => setEditing('new')}>
                             <Plus size={16} /> เพิ่มครู
@@ -126,6 +150,7 @@ export default function Teachers({ teachers, departments }) {
                             <th>รหัส</th>
                             <th>ชื่อ-นามสกุล</th>
                             <th>กลุ่มสาระ</th>
+                            <th>เลขท้ายบัตร</th>
                             <th>เบอร์โทรศัพท์</th>
                             <th>ชุมนุม</th>
                             <th>เข้าสู่ระบบล่าสุด</th>
@@ -141,7 +166,8 @@ export default function Teachers({ teachers, departments }) {
                                 </td>
                                 <td className="whitespace-nowrap">{t.full_name}</td>
                                 <td>{t.department ?? '—'}</td>
-                                <td className="tabular-nums">{t.phone ?? <Badge tone="warn">ไม่มี</Badge>}</td>
+                                <td className="tabular-nums">{t.id_card_last6 ?? <Badge tone="warn">ไม่มี</Badge>}</td>
+                                <td className="tabular-nums">{t.phone ?? '—'}</td>
                                 <td className="tabular-nums">{t.clubs_count}</td>
                                 <td className="text-sm whitespace-nowrap">{formatDateTime(t.last_login)}</td>
                                 <td className="text-sm whitespace-nowrap">
@@ -169,6 +195,22 @@ export default function Teachers({ teachers, departments }) {
                 departments={departments}
                 onClose={() => setEditing(null)}
             />
+
+            <Confirm
+                open={importing}
+                onClose={() => setImporting(false)}
+                title="นำเข้าครูจากฐานข้อมูลหลัก"
+                confirmLabel="นำเข้า"
+                busy={importBusy}
+                onConfirm={runImport}
+            >
+                <p>ดึงรายชื่อครูรหัส 100–999 ที่มีสถานะ "ครู" จากฐานข้อมูล knwacth_tel พร้อมเลขท้ายบัตรประชาชน 6 หลัก</p>
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted">
+                    <li>ครูที่ยังไม่มีในระบบจะถูกเพิ่มใหม่</li>
+                    <li>ครูที่มีอยู่แล้วจะอัปเดตชื่อและเลขท้ายบัตร</li>
+                    <li>ครูที่ไม่มีในฐานข้อมูลหลักจะไม่ถูกลบ</li>
+                </ul>
+            </Confirm>
 
             <Confirm
                 open={!!deleting}

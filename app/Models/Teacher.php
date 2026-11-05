@@ -13,7 +13,10 @@ class Teacher extends Authenticatable
 
     public $incrementing = false;
 
-    protected $fillable = ['teacher_id', 'firstname', 'lastname', 'phone', 'department'];
+    protected $fillable = ['teacher_id', 'firstname', 'lastname', 'phone', 'id_card_last6', 'department'];
+
+    // รหัสผ่านของครู ไม่ส่งออกไปหน้าเว็บ ยกเว้นหน้าจัดการครูของแอดมิน
+    protected $hidden = ['id_card_last6'];
 
     protected $appends = ['full_name'];
 

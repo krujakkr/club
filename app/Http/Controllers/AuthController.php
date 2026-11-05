@@ -77,10 +77,10 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'teacher_id' => 'required|digits_between:1,10',
-            'password' => 'required|digits:10',
+            'password' => 'required|digits:6',
         ], [
             'teacher_id.digits_between' => 'รหัสครูต้องเป็นตัวเลขเท่านั้น',
-            'password.digits' => 'รหัสผ่านต้องเป็นเบอร์โทรศัพท์ 10 หลัก',
+            'password.digits' => 'รหัสผ่านต้องเป็นเลขท้ายบัตรประชาชน 6 หลัก',
         ], ['teacher_id' => 'รหัสครู', 'password' => 'รหัสผ่าน']);
 
         if (! Setting::teacherPeriodActive()) {
@@ -94,9 +94,9 @@ class AuthController extends Controller
 
         $teacher = Teacher::find($data['teacher_id']);
 
-        return $teacher && $teacher->phone && hash_equals($teacher->phone, $data['password'])
+        return $teacher && $teacher->id_card_last6 && hash_equals($teacher->id_card_last6, $data['password'])
             ? $teacher
-            : $this->fail('รหัสครูหรือรหัสผ่าน (เบอร์โทรศัพท์) ไม่ถูกต้อง');
+            : $this->fail('รหัสครูหรือรหัสผ่าน (เลขท้ายบัตรประชาชน 6 หลัก) ไม่ถูกต้อง');
     }
 
     private function admin(Request $request): Admin

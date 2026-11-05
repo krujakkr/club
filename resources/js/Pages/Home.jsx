@@ -90,11 +90,11 @@ function LoginCard() {
                                 required
                             />
                         </Field>
-                        <Field label="รหัสผ่าน" hint="เบอร์โทรศัพท์ 10 หลักที่ให้ไว้กับโรงเรียน">
+                        <Field label="รหัสผ่าน" hint="เลข 6 หลักท้ายของบัตรประชาชน">
                             <Input
                                 type="password"
                                 inputMode="numeric"
-                                maxLength={10}
+                                maxLength={6}
                                 autoComplete="current-password"
                                 value={form.data.password}
                                 onChange={(e) => form.setData('password', e.target.value)}
