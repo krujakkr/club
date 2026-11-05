@@ -28,20 +28,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    // ตารางครูในฐานข้อมูลหลัก knwacth_tel (การเชื่อมต่ออยู่ที่ config/database.php → tel)
-    // ใส่ชื่อตาราง/คอลัมน์ให้ตรงกับของจริงใน .env ถ้าไม่มีคอลัมน์คำนำหน้าหรือกลุ่มสาระ ให้เว้นว่าง
+    // นำเข้าครูจากฐานข้อมูลหลัก knwacth_tel (การเชื่อมต่ออยู่ที่ config/database.php → tel)
     'tel' => [
-        'table' => env('TEL_TEACHER_TABLE', 'teachers'),
-        'status_value' => env('TEL_STATUS_TEACHER', 'ครู'),
-        'columns' => [
-            'id' => env('TEL_COL_ID', 'teacher_id'),
-            'prefix' => env('TEL_COL_PREFIX', 'prefix'),
-            'firstname' => env('TEL_COL_FIRSTNAME', 'firstname'),
-            'lastname' => env('TEL_COL_LASTNAME', 'lastname'),
-            'status' => env('TEL_COL_STATUS', 'status'),
-            'id_card' => env('TEL_COL_ID_CARD', 'id_card'),
-            'department' => env('TEL_COL_DEPARTMENT', ''),
-        ],
+        'status_name' => env('TEL_STATUS_TEACHER', 'ครู'),
     ],
 
     'slack' => [

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use RuntimeException;
 
 class TeacherController extends Controller
 {
@@ -53,7 +54,9 @@ class TeacherController extends Controller
         } catch (QueryException $e) {
             report($e);
 
-            return back()->with('error', 'ดึงข้อมูลจากฐานข้อมูลหลัก (knwacth_tel) ไม่สำเร็จ กรุณาตรวจสอบการตั้งค่า TEL_ ใน .env — '.$e->getPrevious()?->getMessage());
+            return back()->with('error', 'ดึงข้อมูลจากฐานข้อมูลหลัก (knwacth_tel) ไม่สำเร็จ กรุณาตรวจสอบการตั้งค่า TEL_DB_ ใน .env — '.$e->getPrevious()?->getMessage());
+        } catch (RuntimeException $e) {
+            return back()->with('error', $e->getMessage());
         }
 
         $summary = "เพิ่มครูใหม่ {$result['added']} คน, อัปเดต {$result['updated']} คน";

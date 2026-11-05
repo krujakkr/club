@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\DB;
  */
 class TelInspect extends Command
 {
-    protected $signature = 'tel:inspect {table? : ชื่อตาราง (ไม่ใส่ = ใช้ TEL_TEACHER_TABLE)}';
+    protected $signature = 'tel:inspect {table=teachers : ชื่อตาราง}';
 
     protected $description = 'แสดงคอลัมน์ของตารางครูในฐานข้อมูลหลัก knwacth_tel';
 
     public function handle(): int
     {
         $db = DB::connection('tel');
-        $table = $this->argument('table') ?? config('services.tel.table');
+        $table = $this->argument('table');
 
         $this->line('TABLES: '.collect($db->select('SHOW TABLES'))->map(fn ($r) => array_values((array) $r)[0])->implode(', '));
         $rows = $db->table($table)->count();
