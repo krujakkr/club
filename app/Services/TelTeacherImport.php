@@ -10,7 +10,7 @@ use RuntimeException;
 
 /**
  * ดึงรายชื่อครูจากฐานข้อมูลหลัก knwacth_tel (อ่านอย่างเดียว)
- * เอาเฉพาะรหัสครู 100-999 ที่สถานะเป็น "ครู" พร้อมเลขท้ายบัตรประชาชน 6 หลัก
+ * เอาเฉพาะรหัสครู 100-999 ที่สถานะเป็น "ปัจจุบัน" พร้อมเลขท้ายบัตรประชาชน 6 หลัก
  */
 class TelTeacherImport
 {
@@ -62,21 +62,17 @@ class TelTeacherImport
 
         // ตารางอ้างอิงมีไม่กี่แถว ดึงมาเทียบใน PHP เลี่ยงปัญหา collation ต่างกันระหว่างสองฐาน
         $statuses = $db->table('statuses')->pluck('status_name', 'status_id')->map(fn ($v) => Thai::clean($v));
-        $positions = $db->table('positions')->pluck('position_name', 'position_id')->map(fn ($v) => Thai::clean($v));
         $departments = $db->table('departments')->pluck('department_name', 'department_id');
 
-        // "ครู" อยู่ในตารางสถานะ ถ้าไม่มีจึงดูที่ตำแหน่ง
         $statusIds = $statuses->filter(fn ($v) => $v === $name)->keys();
-        $positionIds = $positions->filter(fn ($v) => $v === $name)->keys();
-        [$column, $ids] = $statusIds->isNotEmpty() ? ['status_id', $statusIds] : ['position_id', $positionIds];
 
-        if ($ids->isEmpty()) {
-            throw new RuntimeException("ไม่พบสถานะ \"{$name}\" ในฐานข้อมูลหลัก — สถานะที่มี: {$statuses->implode(', ')} | ตำแหน่งที่มี: {$positions->implode(', ')}");
+        if ($statusIds->isEmpty()) {
+            throw new RuntimeException("ไม่พบสถานะ \"{$name}\" ในฐานข้อมูลหลัก — สถานะที่มี: {$statuses->implode(', ')}");
         }
 
         return $db->table('teachers')
             ->select('teacher_code', 'first_name', 'last_name', 'department_id', 'id_card_last_6_digits')
-            ->whereIn($column, $ids->all())
+            ->whereIn('status_id', $statusIds->all())
             ->get()
             ->map(fn ($row) => [
                 'teacher_id' => Thai::clean($row->teacher_code),

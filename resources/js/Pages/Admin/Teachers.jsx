@@ -204,7 +204,7 @@ export default function Teachers({ teachers, departments }) {
                 busy={importBusy}
                 onConfirm={runImport}
             >
-                <p>ดึงรายชื่อครูรหัส 100–999 ที่มีสถานะ "ครู" จากฐานข้อมูล knwacth_tel พร้อมเลขท้ายบัตรประชาชน 6 หลัก</p>
+                <p>ดึงรายชื่อครูรหัส 100–999 ที่มีสถานะ "ปัจจุบัน" จากฐานข้อมูล knwacth_tel พร้อมเลขท้ายบัตรประชาชน 6 หลัก</p>
                 <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted">
                     <li>ครูที่ยังไม่มีในระบบจะถูกเพิ่มใหม่</li>
                     <li>ครูที่มีอยู่แล้วจะอัปเดตชื่อและเลขท้ายบัตร</li>

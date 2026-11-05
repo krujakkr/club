@@ -30,7 +30,7 @@ return [
 
     // นำเข้าครูจากฐานข้อมูลหลัก knwacth_tel (การเชื่อมต่ออยู่ที่ config/database.php → tel)
     'tel' => [
-        'status_name' => env('TEL_STATUS_TEACHER', 'ครู'),
+        'status_name' => env('TEL_STATUS_NAME', 'ปัจจุบัน'),
     ],
 
     'slack' => [
